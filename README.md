@@ -1,6 +1,6 @@
 ![](https://img.shields.io/badge/Microverse-blueviolet)
 
-# Project Name: # school-library
+# Project Name: School Library
 
 > Description of the project: Implement A school library app builds with ruby
 
