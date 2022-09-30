@@ -4,7 +4,6 @@ require_relative './association/book'
 require_relative './association/rental'
 
 class App
-
   def initialize
     @books = []
     @people = []
@@ -21,7 +20,6 @@ class App
     list = []
     if @people.length.positive?
       @people.each do |item|
-
         list << "[#{item.class}] Name: #{item.name}, ID: #{item.object_id}, Age: #{item.age}"
       end
     end
