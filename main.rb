@@ -32,7 +32,7 @@ def execute(app)
         '6 - List all rentals for a given person id',
         '7 - Exit']
   input = gets.chomp.to_i
-  return 'Thank you for using this app!' unless input != 7
+  return puts 'Thank you for using this app!' unless input != 7
 
   run_option(app, input)
   execute(app)
