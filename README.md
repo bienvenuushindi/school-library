@@ -2,7 +2,7 @@
 
 # Project Name: School Library
 
-> Description of the project: Implement A school library app builds with ruby
+> Description of the project:This app allows you to add new students or teachers, add new books, save records of who borrrowed a given book and when. 
 
 ## Built With
 - Languages: Ruby
@@ -20,7 +20,10 @@ $ git clone https://github.com/bienvenuushindi/school-library.git
 you@your-Pc-name:~$ cd <folder>
 ```
 #### 3. Press Enter to navigate to your local clone.
-
+#### 4. From the teminal run the app with the following command
+```bash command
+ruby main.rb
+```
 ## Authors
 👤 **Ushindi Bienvenu**
 - GitHub: [@usbbush](https://github.com/bienvenuushindi)
