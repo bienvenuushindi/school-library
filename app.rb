@@ -1,7 +1,8 @@
-require_relative './classes/student'
-require_relative './classes/teacher'
-require_relative './association/book'
-require_relative './association/rental'
+require_relative './ui/creators/person_creator'
+require_relative './ui/creators/teacher_creator'
+require_relative './ui/creators/student_creator'
+require_relative './ui/creators/book_creator'
+require_relative './ui/creators/rental_creator'
 
 class App
   def initialize
@@ -13,7 +14,7 @@ class App
   def list_books
     list = []
     @books.to_a.each { |item| list << "Title: \"#{item.title}\" Author #{item.author}" }
-    list.length.positive? ? list : 'No Element Found'
+    list
   end
 
   def list_people
@@ -24,7 +25,7 @@ class App
       end
     end
 
-    list.length.positive? ? list : 'No Element Found'
+    list
   end
 
   def list_rentals(id)
@@ -37,52 +38,67 @@ class App
   def create_person(category)
     return 'Command not recognize' unless [1, 2].include? category
 
-    print 'Age: '
-    age = gets.chomp.to_i
-    print 'Name: '
-    name = gets.chomp
     case category
     when 1
-      print 'Has parent permission? [Y/N]: '
-      parent_permission = gets.chomp.downcase == 'y'
-      @people << Student.new(age, nil, name, parent_permission: parent_permission)
-      'Person created successfully'
+      @people << StudentCreator.instance.ask_data.create
     when 2
-      print 'Specialization:  '
-      specialization = gets.chomp
-      @people << Teacher.new(age, specialization, name)
-      'Person created successfully'
+      @people << TeacherCreator.instance.ask_data.create
     else
       'Choose 1 or 2'
     end
   end
 
   def create_book
-    print 'Title: '
-    title = gets.chomp
-    print 'Author: '
-    author = gets.chomp
-    @books << Book.new(title, author)
-    puts 'Book created successfully'
+    @books << BookCreator.instance.ask_data.create
   end
 
   def create_rental
-    return 'Kindly Add a person before' unless list_people.length.positive?
-    return 'Kindly Add a book before' unless list_books.length.positive?
+    return puts 'Kindly Add a person before' unless list_people.length.positive?
+    return puts 'Kindly Add a book before' unless list_books.length.positive?
 
-    puts 'Select a book from the following list by number '
-    list_books.each_with_index do |el, idx|
-      puts "#{idx}) #{el}"
-    end
-    selected_book_index = gets.chomp.to_i
-    puts 'Select a person from the following list by number (not id)'
-    list_people.each_with_index do |el, idx|
-      puts "#{idx}) #{el}"
-    end
-    selected_people_index = gets.chomp.to_i
-    print 'Date: '
-    date = gets.chomp
-    @rentals << Rental.new(date, @books[selected_book_index], @people[selected_people_index])
-    puts 'Rental created successfully'
+    @rentals << RentalCreator.instance.ask_data(list_people, list_books).create(@people, @books)
   end
+
+  def starter
+    puts ['',
+          'Please choose an option by entering a number:',
+          '1 - List all books',
+          '2 - List all people',
+          '3 - Create a person',
+          '4 - Create a book',
+          '5 - Create a rental',
+          '6 - List all rentals for a given person id',
+          '7 - Exit']
+    user_input = InputReader.read_integer
+    exit unless user_input != 7
+
+    run_option(user_input)
+    starter
+  end
+
+  def run_option(option)
+    case option
+    when 1
+      puts list_books
+    when 2
+      puts list_people
+    when 3
+      puts 'Do you want to create a student (1) or a teacher (2)? [Input the number]:  '
+      create_person(InputReader.read_integer)
+    when 4
+      create_book
+    when 5
+      create_rental
+    when 6
+      puts 'ID of person'
+      list_rentals(InputReader.read_integer)
+    else
+      puts 'Command not found'
+    end
+  end
+
+  def exit
+    'Thank you for using this app!'
+  end
+
 end
