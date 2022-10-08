@@ -100,5 +100,4 @@ class App
   def exit
     'Thank you for using this app!'
   end
-
 end
